@@ -1,6 +1,7 @@
-name: Build Android Staging Release
-# This workflow is triggered on pushes to the repository.
-# see https://help.github.com/en/github/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#onpushpull_requestbranchestags
+name: Build APK and dispatch to QA
+# This workflow is triggered on push of tags with format X.Y.Z
+# Which should build the apk and send a dispatch event to automated qa to run the action
+
 on:
   push:
     tags:
@@ -8,16 +9,19 @@ on:
 
 jobs:
   build:
-    # Job name is Greeting
-    name: Build Android Staging Release
-    # This job runs on Linux
+
+    name: Build APK and dispatch to QA
+
     runs-on: ubuntu-latest
     steps:
       - name: Start workflow
-        run: echo workflow started
+        run: echo "workflow started"
 
       - name: echo tag name
         run: echo ${GITHUB_REF/refs\/tags\//}
+
+      - name: build apk
+        run: echo "...... build apk ......"
 
       - name: notify automated tests project
         run: |
@@ -27,4 +31,4 @@ jobs:
           --data '{"event_type": "run-automated-tests", "client_payload": { "apklink": "some link" }}'
 
       - name: End workflow
-        run: echo workflow ended
+        run: echo "workflow ended"

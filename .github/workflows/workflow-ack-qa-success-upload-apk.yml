@@ -1,0 +1,25 @@
+name: QA Finished
+# This workflow is triggered on a dispatch event after QA is done
+
+on:
+  repository_dispatch:
+
+jobs:
+  build:
+    name: QA Finished
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Start workflow
+        run: echo "workflow started"
+
+      - name: echo event action
+        run: echo "action triggered - ${{ github.event.action }}"
+
+      - name: Build apk if successful
+        if: github.event.action == 'qa-success'
+        run: echo "....... QA success! build apk and upload ........"
+
+      - name: End workflow
+        run: echo "workflow ended"
